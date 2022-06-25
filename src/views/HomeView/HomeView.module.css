@@ -1,0 +1,22 @@
+.text {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.Msg {
+    font-weight: 700;
+    font-size: 36px;
+    color: rgb(33, 118, 138);
+}
+
+.infoMsg {
+    font-weight: 600;
+    margin-top: 20px;
+    font-size: 20px;
+    color: rgb(22, 100, 117);
+    margin-bottom: auto;
+}

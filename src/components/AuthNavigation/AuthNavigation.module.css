@@ -1,0 +1,21 @@
+.authNav {
+    display: flex
+}
+
+.link {
+    font-weight: 700;
+    font-size: 18px;
+    margin-right: 20px;
+    color: rgb(24, 117, 98);
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.linkActive {
+    font-weight: 700;
+    font-size: 18px;
+    margin-right: 20px;
+    color: rgb(112, 45, 171);
+    text-decoration: none;
+    text-transform: uppercase;
+}
