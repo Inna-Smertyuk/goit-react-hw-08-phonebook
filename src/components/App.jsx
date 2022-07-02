@@ -1,11 +1,11 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { lazy, useEffect } from 'react';
 import Layout from './Layout';
-import authOperations from '../redux/auth/auth-operations';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import authSelectors from '../redux/auth/auth-selector';
+import authOperations from '../redux/auth/auth-operations';
 
 const HomeView = lazy(() => import('../views/HomeView/HomeView'));
 const PhonebookView = lazy(() =>
@@ -16,29 +16,44 @@ const LogInView = lazy(() => import('../views/LogInView/LogInView'));
 
 export const App = () => {
   const dispatch = useDispatch();
+  const isFetchingUser = useSelector(authSelectors.getIsFetchingUser);
 
   useEffect(() => {
     dispatch(authOperations.fetchCurrentUser());
   }, [dispatch]);
 
-  const isFetchingCurrentUser = useSelector(authSelectors.getIsFetchingUser);
-
   return (
     <>
-      <Routes>
-        {!isFetchingCurrentUser && (
-          <Route exact path="/" element={<Layout />}>
+      {!isFetchingUser && (
+        <Routes>
+          <Route path="/" element={<Layout />}>
             <Route
               index
               element={
-                <PublicRoute redirectTo="/contacts" restricted>
+                <PublicRoute>
                   <HomeView />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="register"
+              element={
+                <PublicRoute restricted>
+                  <SignUpView />
                 </PublicRoute>
               }
             />
 
             <Route
-              path="/contacts"
+              path="login"
+              element={
+                <PublicRoute redirectTo="/contacts" restricted>
+                  <LogInView />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="contacts"
               element={
                 <PrivateRoute redirectTo="/login">
                   <PhonebookView />
@@ -46,27 +61,10 @@ export const App = () => {
               }
             />
 
-            <Route
-              path="/signup"
-              element={
-                <PublicRoute redirectTo="/contacts" restricted>
-                  <SignUpView />
-                </PublicRoute>
-              }
-            />
-
-            <Route
-              path="/login"
-              element={
-                <PublicRoute redirectTo="/contacts" restricted>
-                  <LogInView />
-                </PublicRoute>
-              }
-            />
             <Route path="*" element={<Navigate to="/" />} />
           </Route>
-        )}
-      </Routes>
+        </Routes>
+      )}
     </>
   );
 };
